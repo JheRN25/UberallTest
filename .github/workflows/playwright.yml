@@ -20,6 +20,6 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
         working-directory: tests
-      - - name: Run Playwright tests
-          run: npx playwright test e2e/transactionFlow.spec.ts
-          working-directory: tests
+      - name: Run Playwright tests
+        run: npx playwright test e2e/transactionFlow.spec.ts
+        working-directory: tests

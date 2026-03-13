@@ -70,7 +70,9 @@ test.describe.serial('Deposit and Withdrawal', () => {
     // Then try to type letters into the same input.
     await loggedInPage.keyboard.type('abc');
 
-    // Expected behavior: input[type=number] ignores letters, value stays as "100".
-    await expect(depositPage.amountInput).toHaveValue('100');
+    // Expected: input[type=number] does not accept letters. Chrome keeps "100"; Firefox may clear to "".
+    const value = await depositPage.amountInput.inputValue();
+    expect(value).not.toMatch(/[a-zA-Z]/);
+    expect(['', '100']).toContain(value);
   });
 });

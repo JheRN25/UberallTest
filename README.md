@@ -1,9 +1,14 @@
-## Playwright Banking Demo Tests
+## Uberall Banking Demo Tests
 
 This project contains Playwright end‑to‑end tests for the GlobalSQA AngularJS Banking demo.  
-The main goal is to exercise a **Customer login → Deposit → Transactions → Withdrawal → Transactions** flow using the Page Object Model (POM).
+The main goal is to exercise the following using the Page Object Model (POM):
+1. Customer login
+2. Deposit & view transactions
+3. Withdrawal & view transactions.
 
 ### Project structure
+
+- Added the following as helpers and fixtures to avoid duplication and repetition, the exact login steps live in one place, consistent behavior & pathing for screenshots and if the app changes, you fix it once, not in every test.
 
 - **`helpers.ts`**
   - `LOGIN_PAGE_URL`: URL for the banking demo.
@@ -16,6 +21,8 @@ The main goal is to exercise a **Customer login → Deposit → Transactions →
     - Calls `loginAsCustomer(page)` before each test that uses it.
     - Makes tests start on the **account** page instead of the login page.
   - Re‑exports Playwright’s `test` and `expect`.
+
+- Utilized Elements (page objects) and Methods so that it's easier to read, maintain in case selector changes and easier to reuse. 
 
 - **`pages/LoginElements.ts`** (`PlaywrightHomePage`)
   - Encapsulates login page interactions:
@@ -44,12 +51,11 @@ The main goal is to exercise a **Customer login → Deposit → Transactions →
     - `openWithdrawalTab()`
     - `fillAmount(amount)`
     - `submitWithdraw()`
-  - All locators are scoped to the withdrawal form.
 
 - **`pages/transactionElements.ts`** (`TransactionPage`)
   - Transactions view POM:
     - `openTransactionsWithWait()`:
-      - Waits 1.5 seconds (to let UI settle),
+      - Waits 0.5 seconds (to let UI settle),
       - Waits for the Transactions button to be visible/enabled,
       - Clicks it and waits for the table + header to render.
     - `getRow(amount, type)`: returns locator for rows containing the amount and transaction type (`Credit` or `Debit`).
@@ -80,7 +86,7 @@ The main goal is to exercise a **Customer login → Deposit → Transactions →
    - Uses `expect.poll(async () => depositRow.count())` to assert:
      - **At least one `$DEPOSIT_AMOUNT Credit` row exists** (within 60s).
 
-#### 2. Withdraw test – `Should be able to withdraw`
+#### 2. Withdraw test – `Should be able to withdraw and check transactions`
 
 1. **Setup: ensure balance**
    - Calls `makeDeposit(loggedInPage, DEPOSIT_AMOUNT)` again so the test is independent of the deposit test.

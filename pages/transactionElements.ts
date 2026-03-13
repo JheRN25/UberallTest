@@ -11,14 +11,6 @@ export class TransactionPage {
     return this.page.locator('button[ng-click="transactions()"]');
   }
 
-  get backButton() {
-    return this.page.getByRole('button', { name: 'Back' });
-  }
-
-  get nextPageButton() {
-    return this.page.getByRole('button', { name: '>' });
-  }
-
   get transactionsTable() {
     return this.page.locator('table');
   }
@@ -37,7 +29,7 @@ export class TransactionPage {
   }
 
   async openTransactionsWithWait() {
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(1000);
     await expect(this.transactionsTabButton).toBeVisible();
     await expect(this.transactionsTabButton).toBeEnabled();
     await this.transactionsTabButton.click();

@@ -37,6 +37,8 @@ export class DepositPage {
   }
 
   async submitDeposit() {
+    await this.page.waitForTimeout(1000);
     await this.depositSubmitButton.click();
   }
 }
+//end

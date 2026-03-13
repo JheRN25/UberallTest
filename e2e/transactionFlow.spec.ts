@@ -56,5 +56,21 @@ test.describe.serial('Deposit and Withdrawal', () => {
     await expect
       .poll(async () => withdrawalRow.count(), { timeout: 60000 })
       .toBeGreaterThan(0);
-    });
   });
+
+  test('Should not accept letters in deposit amount input', async ({ loggedInPage }) => {
+    const depositPage = new DepositPage(loggedInPage);
+
+    await depositPage.openDepositTab();
+
+    // First, enter a valid numeric value.
+    await depositPage.fillAmount(100);
+    await expect(depositPage.amountInput).toHaveValue('100');
+
+    // Then try to type letters into the same input.
+    await loggedInPage.keyboard.type('abc');
+
+    // Expected behavior: input[type=number] ignores letters, value stays as "100".
+    await expect(depositPage.amountInput).toHaveValue('100');
+  });
+});

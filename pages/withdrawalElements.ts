@@ -34,7 +34,7 @@ export class WithdrawalPage {
   }
 
   async submitWithdraw() {
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(1000);
     await this.withdrawSubmitButton.click();
   }
 }
